@@ -1,0 +1,8 @@
+{
+  "name": "stroke-prediction-root",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "install-all": "cd frontend && npm install && cd .. && ..\\venv\\Scripts\\pip install -r requirements.txt"
+  }
+}
