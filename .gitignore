@@ -3,11 +3,9 @@ datasets/
 data/
 *.zip
 
-# Models (binary files, too large)
-models/*.h5
-models/*.pkl
-models/*.pth
-models/*.pt
+# Models (Git LFS tracks .h5 and .pkl)
+**/*.pth
+**/*.pt
 
 # Python
 __pycache__/
