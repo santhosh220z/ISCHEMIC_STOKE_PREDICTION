@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Upload, FileImage, X, AlertTriangle, CheckCircle, Eye, EyeOff, Save } from 'lucide-react';
+import { Upload, FileImage, X, AlertTriangle, CheckCircle, Eye, EyeOff, Save, Activity } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
@@ -87,10 +87,11 @@ const MRIPage = () => {
     };
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100vh-8rem)]">
+        <div className="flex flex-col gap-8 pb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {/* Upload Section */}
-            <div className="flex flex-col space-y-6">
-                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex-1 flex flex-col">
+            <div className="flex flex-col space-y-6 lg:col-span-7">
+                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex-1 flex flex-col min-h-[500px]">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-2xl font-bold text-dark">Upload MRI Scan</h2>
                         {result && result.lesionOverlay && (
@@ -175,7 +176,7 @@ const MRIPage = () => {
             </div>
 
             {/* Results Section */}
-            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col lg:col-span-5 min-h-[500px]">
                 <h2 className="text-2xl font-bold text-dark mb-6">Analysis Results</h2>
 
                 {error && (
@@ -245,6 +246,45 @@ const MRIPage = () => {
                             </div>
                         )}
 
+                        {/* Metrics Section */}
+                        {result.metrics && (
+                            <div className="w-full bg-white border border-gray-100 rounded-2xl p-6 shadow-sm mt-4">
+                                <div className="flex items-center gap-3 mb-4 border-b border-gray-50 pb-3">
+                                    <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+                                        <Activity size={20} />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-gray-800">Model Performance Metrics</h4>
+                                        <p className="text-xs text-gray-500">CNN Evaluation & Prediction Data</p>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                    {Object.entries(result.metrics).map(([key, value]) => {
+                                        let valueColor = 'text-gray-800';
+                                        
+                                        if (key === 'Risk Level') {
+                                            if (value === 'High') valueColor = 'text-red-600';
+                                            else if (value === 'Medium') valueColor = 'text-orange-500';
+                                            else if (value === 'Low') valueColor = 'text-green-600';
+                                        } else if (key === 'Prediction Probability') {
+                                            valueColor = 'text-blue-600';
+                                        }
+
+                                        return (
+                                            <div key={key} className="bg-gray-50 p-3 rounded-xl border border-gray-100 flex flex-col justify-center">
+                                                <p className="text-xs text-gray-500 font-medium mb-1 truncate" title={key}>
+                                                    {key}
+                                                </p>
+                                                <p className={`font-bold text-sm ${valueColor}`}>
+                                                    {value}
+                                                </p>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Save to Records Button */}
                         <button
                             onClick={saveToRecords}
@@ -272,6 +312,25 @@ const MRIPage = () => {
                     </div>
                 )}
             </div>
+            </div>
+
+            {/* Graphs Section at the bottom */}
+            {result && result.graphs && (
+                <div className="w-full bg-white border border-gray-100 rounded-3xl p-8 shadow-sm">
+                    <h2 className="text-2xl font-bold text-dark mb-6 border-b border-gray-50 pb-4">Model Evaluation Graphs</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                        <div className="w-full flex justify-center group">
+                            <img src={`data:image/png;base64,${result.graphs.roc}`} alt="ROC Curve" className="w-full rounded-2xl border border-gray-100 shadow-sm transition-transform group-hover:scale-[1.02]" />
+                        </div>
+                        <div className="w-full flex justify-center group">
+                            <img src={`data:image/png;base64,${result.graphs.pr}`} alt="Precision-Recall Curve" className="w-full rounded-2xl border border-gray-100 shadow-sm transition-transform group-hover:scale-[1.02]" />
+                        </div>
+                        <div className="w-full flex justify-center group">
+                            <img src={`data:image/png;base64,${result.graphs.confusion}`} alt="Confusion Matrix" className="w-full rounded-2xl border border-gray-100 shadow-sm transition-transform group-hover:scale-[1.02]" />
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

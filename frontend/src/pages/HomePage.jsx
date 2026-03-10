@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Activity, Brain, Users, Clock, ArrowRight } from 'lucide-react';
+import { Activity, Brain, Users, Clock, ArrowRight, Network, Stethoscope, Image as ImageIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const StatCard = ({ icon: Icon, value, label, color }) => (
@@ -73,6 +73,46 @@ const HomePage = () => {
                 <StatCard icon={Brain} value="15M" label="People suffer stroke worldwide/year" color="bg-blue-500" />
                 <StatCard icon={Users} value="10%" label="Of strokes occur in people <50" color="bg-amber-500" />
                 <StatCard icon={Clock} value="80%" label="Strokes can be prevented" color="bg-green-500" />
+            </section>
+
+            {/* ML Algorithms Section */}
+            <section className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-3xl p-10 border border-blue-100 shadow-sm mt-8 mb-8">
+                <div className="text-center mb-10">
+                    <h2 className="text-3xl font-bold text-dark">Powered by Advanced AI Algorithms</h2>
+                    <p className="text-textSecondary mt-3 text-lg max-w-2xl mx-auto">Our platform leverages state-of-the-art machine learning architectures to provide fast and highly accurate stroke detection.</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {/* Clinical RF */}
+                    <motion.div whileHover={{ y: -5 }} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+                        <div className="p-4 rounded-full bg-blue-100 text-blue-600 mb-6">
+                            <Stethoscope size={32} />
+                        </div>
+                        <h3 className="text-xl font-bold text-dark mb-3">Random Forest</h3>
+                        <p className="text-sm text-primary font-medium mb-4">Clinical Data Model</p>
+                        <p className="text-textSecondary text-sm">Uses an ensemble of decision trees to evaluate patient demographic and health data (like age, BMI, and hypertension) to predict general stroke risk with high reliability.</p>
+                    </motion.div>
+
+                    {/* MRI CNN */}
+                    <motion.div whileHover={{ y: -5 }} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+                        <div className="p-4 rounded-full bg-indigo-100 text-indigo-600 mb-6">
+                            <Network size={32} />
+                        </div>
+                        <h3 className="text-xl font-bold text-dark mb-3">Convolutional Neural Network</h3>
+                        <p className="text-sm text-primary font-medium mb-4">MRI Diagnosis Model</p>
+                        <p className="text-textSecondary text-sm">A deep learning architecture optimized for medical imaging. It scans brain MRI slices for hyperintense regions and morphological anomalies indicative of ischemic strokes.</p>
+                    </motion.div>
+
+                    {/* Seg UNet */}
+                    <motion.div whileHover={{ y: -5 }} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+                        <div className="p-4 rounded-full bg-teal-100 text-teal-600 mb-6">
+                            <ImageIcon size={32} />
+                        </div>
+                        <h3 className="text-xl font-bold text-dark mb-3">U-Net Architecture</h3>
+                        <p className="text-sm text-primary font-medium mb-4">Lesion Segmentation</p>
+                        <p className="text-textSecondary text-sm">An encoder-decoder network featuring skip connections, specifically designed to precisely segment and highlight the affected stroke lesion areas directly on the MRI scan.</p>
+                    </motion.div>
+                </div>
             </section>
 
             {/* FAST Warning Signs */}
